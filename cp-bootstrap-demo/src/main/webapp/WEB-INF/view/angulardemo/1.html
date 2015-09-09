@@ -1,0 +1,28 @@
+<html>
+<head>
+<script type="text/javascript"
+	src="${requestContext.contextPath}/resource/plugins/angularjs/${angularjsVersion}/angular.js"></script>
+<script type="text/javascript"
+	src="${requestContext.contextPath}/resource/plugins/jquery/${jqueryVersion}"></script>
+</head>
+<body>
+	<p ng-init="name='小明明'">
+		输入名字<input type="text" ng-model="name" ng-init="count=10">
+		{{name+count}}
+	<div ng-init="li=['jobin','tom','helin']">
+		<ul>
+			<li ng_repeat="x in li">{{x}}</li>
+		</ul>
+	</div>
+	<div ng-controller="name">{{x}}</div>
+	<script type="text/javascript">
+		var myApp = angular.module('myApp');
+		myApp.controller('name', [ '$scope', function($scope) {
+			$scope.x = '你好吗';
+		} ]);
+		angular.element(document).ready(function() {
+			angular.bootstrap(document, [ 'myApp' ]);
+		});
+	</script>
+</body>
+</html>

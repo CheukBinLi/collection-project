@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<link rel="stylesheet"
+	href="${requestContext.contextPath}/resource/plugins/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet"
+	href="${requestContext.contextPath}/resource/plugins/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script
+	src="${requestContext.contextPath}/resource/plugins/jquery/${jqueryVersion}"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script
+	src="${requestContext.contextPath}/resource/plugins/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	
+<script type="text/javascript"
+	src="${requestContext.contextPath}/resource/plugins/angularjs/${angularjsVersion}/angular.js"></script>
+<title>下拉</title>
+</head>
+<body ng-app="">
+	<div class="dropdown">
+		<button class="btn btn-default dropdown-toggle" type="button"
+			id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+			Dropdown <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			<li role="presentation"><a role="menuitem" tabindex="-1"
+				href="#">Action</a></li>
+		</ul>
+	</div>
+	<div class="dropdown">
+		<button class="btn btn-default dropdown-toggle" type="button"
+			id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true">
+			Dropdown <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2"
+			ng-init="list=['1','2','3','4']">
+			<li role="presentation"><a role="menuitem" tabindex="-1"
+				href="#" ng-repeat="name in list">{{name}}</a></li>
+		</ul>
+	</div>
+</body>
+</html>

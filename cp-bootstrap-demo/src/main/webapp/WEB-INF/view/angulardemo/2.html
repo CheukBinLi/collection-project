@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html ang-app="">
+<head>
+<link rel="stylesheet"
+	href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<style type="text/css">
+.css-class-add, .css-class-remove {
+	-webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+	-moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+	-o-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+	transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+
+.css-class, .css-class-add.css-class-add-active {
+	color: red;
+	font-size: 3em;
+}
+
+.odd {
+	color: red;
+}
+
+.even {
+	color: blue;
+}
+
+.css-class-remove.css-class-remove-active {
+	font-size: 1.0em;
+	color: black;
+}
+</style>
+<script type="text/javascript"
+	src="${requestContext.contextPath}/resource/plugins/angularjs/${angularjsVersion}/angular.js"></script>
+</head>
+<body ng-app="myApp">
+
+	<div ng-controller="hello">
+		<h1>Hello {{name}} !</h1>
+	</div>
+
+	<div ng-controller="emailController">
+		<input ng-model="to" type="email" placeholder="Recipient" />
+		<textarea ng-model="emailBody"></textarea>
+		<pre>{{ previewText }}</pre>
+	</div>
+
+	<div ng-controller="filterController">{{name}}</div>
+
+	<form novalidate="novalidate" ng-controller="formController">
+		<div>
+			<label>用户名：</label><input name="name" ng-model="name" type="text"
+				required="required">{{name}}
+		</div>
+		<div>
+			<label>邮箱：</label><input name="email" ng-model="email" type="email"
+				required="required">{{email}}
+		</div>
+		<div>
+			<label>自定义匹配T[5D]X：</label><input name="pattern" ng-model="pattern"
+				ng-pattern="/^[0-9]*[A-Z][0-9]*$/" type="text" required="required">{{pattern}}
+		</div>
+		<div>
+			<input type="date" id="exampleInput" name="input"
+				ng-model="example.value" placeholder="yyyy-MM-dd" min="2013-01-01"
+				max="2013-12-31" required />
+		</div>
+		<div>
+			<input type="checkbox" ng-init="checked_a=false"
+				ng-checked="checked_a" ng-model="checked_a" /> {{checked_a}}<select><option>Checked</option>
+				<option ng-selected="!checked_a">not Check</option></select>
+		</div>
+		<div>csp：{{csp()}}</div>
+	</form>
+
+	<div ng-init="list=['John', 'Mary', 'Cate', 'Suz']">
+		<ol>
+			<li ng-repeat="name in list"><span ng-class-odd="'odd'"
+				ng-class-even="'even'">{{name}}</span></li>
+		</ol>
+	</div>
+	<div>
+		<label>Click me to toggle: <input type="checkbox"
+			ng-model="checkedValue"></label><br />
+		<button ng-model="button" ng-disabled="checkedValue">Button</button>
+	</div>
+
+	<div ng-controller="focusController">
+		<p>ng-focus</p>
+		<input ng-focus="focus()" ng-blur="blur()" ng-model="cctv"
+			placeholder="点我">
+	</div>
+	ng-switch
+	<div>
+		<input ng-model="X"><label>输入小写'x'</label>
+		<div ng-switch="X">
+			<h1 ng-switch-default>{{X}}</h1>
+			<h1 ng-switch-when="x" style="color: red;">{{X}}</h1>
+		</div>
+	</div>
+
+	<my-directive myurl="" mylink="" some-attr="{{my-url}}"></my-directive>
+	<p>
+		<my-xx></my-xx>
+		<script type="text/javascript">
+			var app;
+			(function(angular) {
+				app = angular.module("myApp", []);
+				/* hello word */
+				app.controller("hello", function($scope) {
+					$scope.name = '小小明';
+				});
+				/* $interpolate */
+				app.controller("emailController",
+						function($scope, $interpolate) {
+							$scope.$watch("emailBody", function(newValue,
+									oldValue, scope) {
+								if (newValue) {
+									var template = $interpolate(newValue);
+									$scope.previewText = template({
+										to : $scope.to
+									});
+									console.log(template({
+										to : $scope.to
+									}));
+								}
+								$scope.previewText = newValue;
+							});
+						});
+				/*filter*/
+				angular.module("myApp.filters", []).filter("capitalize",
+						function() {
+							return function(input) {
+								if (input)
+									return input[0];
+							}
+						});
+				app.controller("filterController", [ '$scope', '$filter',
+						function($scope, $filter) {
+							$scope.name = $filter("lowercase")('ABCDEFG');
+						} ]);
+				/*form*/
+				app.controller("formController", function($scope) {
+					$scope.name = '';
+					$scope.email = '';
+					$scope.pattern = '';
+					$scope.csp = function() {
+						try {
+							return eval('1+2');
+						} catch (e) {
+							this.evilError = e.message;
+						}
+					}
+				});
+				/*ng-focus*/
+				app.controller("focusController", function($scope) {
+					$scope.focus = function() {
+						console.log('on focus');
+						$scope.cctv = '焦点触发';
+					};
+					$scope.blur = function() {
+						console.log('on blur');
+						$scope.cctv = '失去焦点';
+					}
+				});
+				/*自定义HTML标签*/
+				app.directive('myDirective', function() {
+					return {
+						restrict : 'E',
+						scope : {
+							myUrl : '@334',
+							myLink : '@'
+						},
+						template : '<a href="http://google.com">Google</a>'
+					};
+				});
+				app.directive('myXx', function() {
+					return {
+						restrict : 'E',//AECM
+						replace : true,
+						template : '<a href="http://163.com">163.com</a>'
+					};
+				});
+			})(window.angular);
+		</script>
+</html>

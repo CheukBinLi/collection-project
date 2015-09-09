@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<link rel="stylesheet" href="${requestContext.contextPath}/resource/plugins/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="${requestContext.contextPath}/resource/plugins/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="${requestContext.contextPath}/resource/plugins/jquery/${jqueryVersion}"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="${requestContext.contextPath}/resource/plugins/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="${requestContext.contextPath}/resource/plugins/angularjs/${angularjsVersion}/angular.js"></script>
+
+<title>路由</title>
+</head>
+<body ng-app="myApp">
+	<div ng-controller="aa">
+		hello标签：
+		<hello></hello>
+		</br> div:
+		<div hello></div>
+		</br> css:
+		<div class="hello"></div>
+		</br> 注释
+		<!-- directive:hello -->
+		<transclude>不被替换的内容</transclude>
+
+		<mouseeven>鼠标事件</mouseeven>
+
+		<p>指令继承</p>
+		<nba>zzz</nba>
+		<strength>力量</strength>
+		<speed>速度</speed>
+	</div>
+	<div ng-controller="helloController">
+		<hellox xxx='sayhello'>ss</hellox>
+		<hellox2 xxx='say(msg)'>ss</hellox>
+	</div>
+	<div ng-view></div>
+	<script type="text/javascript">
+	var app;
+	app = angular.module("myApp", []);
+	app.controller("aa", [ '$scope', function($scope) {
+	    $scope.a = '123123123';
+	} ]);
+	/*map缓存*/
+	app.run(function($templateCache) {
+	    $templateCache.put("hello", "<span style='color:red;'>hello指令</span>");
+	});
+	app.directive("hello", function($templateCache) {
+	    return {
+		restrict : "AEMC",
+		template : $templateCache.get('hello'),
+		replace : true
+	    }
+	});
+	app.directive("transclude", function($templateCache) {
+	    return {
+		restrict : "AEMC",
+		template : "<span style='color:red;'>transclude指令:<span ng-transclude></span></span>",
+		transclude : true
+	    }
+	});
+	app.directive("mouseeven", function($templateCache) {
+	    return {
+		restrict : "AEMC",
+		link : function(scope, iElement, iAttrs) {
+		    iElement.bind('mouseenter', function() {
+			alert('鼠标经过');
+		    });
+		    iElement.bind('mousedown', function() {
+			alert('鼠标点击');
+		    });
+		}
+	    }
+	});
+	app.directive("nba", function() {
+	    return {
+		restrict : "AEMC",
+		scope : {},
+		controller : function($scope) {
+		    $scope.attb = [];//数组
+		    this.addStrength = function() {
+			$scope.attb.push('力量');
+		    };
+		    this.addSpeed = function() {
+			$scope.attb.push('速度');
+		    };
+		    this.addLight = function() {
+			$scope.attb.push('光');
+		    }
+		},
+		link : function(scope, iElement, iAttrs) {
+		    iElement.bind('mousedown', function() {
+			console.log(scope.attb);
+		    });
+		}
+	    }
+	});
+	app.directive("strength", function() {
+	    return {
+		require : '?^nba',
+		link : function(scope, iElement, iAttrs, x) {
+		    x.addStrength();
+		}
+	    }
+	});
+	app.directive("speed", function() {
+	    return {
+		require : '?^nba',
+		link : function(scope, iElement, iAttrs, x) {
+		    x.addSpeed();
+		}
+	    }
+	});
+
+	/* 独立scope绑定 */
+	app.controller('helloController', [ '$scope', function($scope) {
+	    $scope.sayhello = '你好吗？';
+	    $scope.say = function(msg) {
+		alert(msg);
+	    };
+	} ]);
+	app.directive('hellox', function() {
+	    return {
+		restrict : "AEMC",
+		scope : {
+		    xxx : '@'
+		},
+		template : "<span>{{xxx}}</span>",
+		templace : true
+	    }
+	});
+	app.directive('hellox2', function() {
+	    return {
+		restrict : "AEMC",
+		scope : {
+		    xxx : '&'
+		},
+		template : "<input type='text' ng-model='message'><button ng-click='xxx({msg:message})'>查询</button>",
+		templace : true
+	    }
+	});
+    </script>
+</body>
+</html>

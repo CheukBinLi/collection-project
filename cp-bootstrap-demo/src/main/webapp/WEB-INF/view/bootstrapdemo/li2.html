@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<link rel="stylesheet"
+	href="${requestContext.contextPath}/resource/plugins/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet"
+	href="${requestContext.contextPath}/resource/plugins/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script
+	src="${requestContext.contextPath}/resource/plugins/jquery/${jqueryVersion}"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script
+	src="${requestContext.contextPath}/resource/plugins/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<script type="text/javascript"
+	src="${requestContext.contextPath}/resource/plugins/angularjs/${angularjsVersion}/angular.js"></script>
+
+<title>导航</title>
+<style type="text/css">
+.tree {
+	margin: 50px;
+}
+
+li {
+	list-style-type: none;
+	padding: 15px 2px 2px 5px;
+	margin: 0;
+	position: relative;
+}
+
+li::before, li::after {
+	content: "";
+	position: absolute;
+	left: -20px;
+	right: auto;
+}
+
+li::after {
+	border-top: 1px solid #999;
+	height: 20px;
+	top: 25px;
+	width: 25px;
+	z-index: 1000;
+}
+
+li::before {
+	border-left: 1px solid #999;
+	bottom: 50px;
+	height: 100%;
+	top: 0;
+	width: 1px;
+	z-index: 1000;
+}
+
+li span {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #999;
+	padding: 2px 15px;
+	z-index: 10010;
+}
+
+li:last-child::before {
+	height: 26px
+}
+
+li:first-child::before {
+	/* height:30px */
+	
+}
+
+a {
+	color: red;
+}
+
+html:root dt {
+	color: yellow;
+}
+</style>
+</head>
+<body ng-app>
+
+	<div class="tree">
+		<ol>
+			<li><span><i></i><a>1</a></span>
+				<ol>
+					<li><span><i></i><a>11</a></span></li>
+					<li><span><i></i><a>12</a></span></li>
+					<li><span><i></i><a>13</a></span></li>
+				</ol></li>
+			<li><span><i></i><a>2</a></span></li>
+			<li><span><i></i><a>3</a></span></li>
+			<li><span><i></i><a>4</a></span></li>
+		</ol>
+	</div>
+
+	<dl>
+		<dt>root</dt>
+		<dd>asdfsadfsd</dd>
+	</dl>
+	<script type="text/javascript">
+		var base;
+		(function() {
+			base = {
+				m1 : function() {
+					this.init.apply(this, args);
+				},
+				m2 : function() {
+					alert("base-m2")
+				}
+			}
+			var a = base.prototype = {
+				m3 : function() {
+					alert(123)
+				}
+			}
+			a.m3();
+		}(window, document));
+		base.m2();
+	</script>
+</body>
+</html>
